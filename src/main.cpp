@@ -27,10 +27,10 @@ int main(int argc, char* argv[])
     sf::Clock deltaClock;
 
     // scale the imgui ui and text size by 2
-    ImGui::GetStyle().ScaleAllSizes(2.0f);
-    ImGui::GetIO().FontGlobalScale = 2.0f;
+    ImGui::GetStyle().ScaleAllSizes(1.5f);
+    ImGui::GetIO().FontGlobalScale = 1.5f;
 
-    // the imgui color {r, g, b} wheel requires floats from 0-1 
+    // the imgui color {r, g, b} wheel requires floats from 0-1
     // sfml will require instead of uint8_t from 0-255
     // this is the only really annoying conversion between sfml and imgui
     float c[3] = { 0.0f, 1.0f, 1.0f };
@@ -38,20 +38,21 @@ int main(int argc, char* argv[])
     // let's make a shape that we will draw to the screen
     float circleRadius = 50;    // radius to draw the circle
     int circleSegments = 32;    // number of segments to draw the circle with
-    float circleSpeedX = 1.0f;  // we will use this to move the circle later
-    float circleSpeedY = 0.5f;  // you will read these values from the file
+    float circleSpeedX = 2.0f;  // we will use this to move the circle later
+    float circleSpeedY = 2.0f;  // you will read these values from the file
     bool drawCircle = true;     // whether or not to draw the circle
     bool drawText = true;     // whether or not to draw the text
 
     // create the sfml circle shape based on our parameters
-    sf::CircleShape circle(circleRadius, circleSegments);   // create a circle shape with radius 50
-    circle.setPosition({ 10.0f, 10.0f });                     // set the top-left position of the circle
+    sf::CircleShape circle(circleRadius, circleSegments);           // create a circle shape with radius 50
+    circle.setPosition({ windowWidth / 2.f, windowHeight / 2.f});   // set the top-left position of the circle
+	circle.setOrigin({circle.getRadius(), circle.getRadius()});		// set origin t ocenter of circle
 
     // let's load a font so we can display some text
     sf::Font myFont;
 
     // attempt to load the font from a file
-    if (!myFont.openFromFile("fonts/PPFraktionMonoBold.otf"))
+    if (!myFont.openFromFile("bin/fonts/PPFraktionMonoBold.otf"))
     {
         // if we can't load the font, print an error to the error console and exit
         std::cout << "Could not load font!\n";
@@ -63,7 +64,7 @@ int main(int argc, char* argv[])
 
     // position the top-left corner of the text so that the text aligns on the bottom
     // text character size is in pixels, so move the text up  from the bottom by its height
-    text.setPosition({ 0, wHeight - (float)text.getCharacterSize() });
+    text.setPosition({ 0, windowHeight - (float)text.getCharacterSize() });
 
     // set up a character array to set the text
     std::string displayString = "Sample Text";
@@ -131,13 +132,23 @@ int main(int argc, char* argv[])
         // we must convert from the ui floats to sfml Uint8
         circle.setFillColor(sf::Color(uint8_t(c[0]*255), uint8_t(c[1]*255), uint8_t(c[2]*255)));
 
-        // basic animation - move the each frame if it's still in frame
-        circle.setPosition({ circle.getPosition().x + circleSpeedX, circle.getPosition().y + circleSpeedY });
-
         // basic rendering function calls
         window.clear();         // clear the window of anything previously drawn
         if (drawCircle)         // draw the circle if the boolean is true
-        { 
+        {
+			// basic animation - move the circle each frame if it's still in frame
+			circle.setPosition({ circle.getPosition().x + circleSpeedX, circle.getPosition().y + circleSpeedY });
+			
+			if (circle.getPosition().x - circle.getRadius() <= 0 || circle.getPosition().x + circle.getRadius() >= windowWidth)
+			{
+				circleSpeedX *= -1;
+			}
+			
+			if (circle.getPosition().y - circle.getRadius() <= 0 || circle.getPosition().y + circle.getRadius() >= windowHeight)
+			{
+				circleSpeedY *= -1;
+			}
+			
             window.draw(circle); 
         }   
         if (drawText)           // draw the text if the boolean is true
