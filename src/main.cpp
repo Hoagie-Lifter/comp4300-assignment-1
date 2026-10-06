@@ -3,12 +3,18 @@
 #include <fstream>
 
 #include <SFML/Graphics.hpp>
-#include "imgui.h"
-#include "imgui-SFML.h"
-#include "imgui_stdlib.h"
+
+void initialize(const std::string & configFile)
+{
+	std::ifstream fin(configFile);
+	std::string token;
+	while (fin >> token);
+}
 
 int main(int argc, char* argv[])
 {
+	initialize("config/config.txt");
+	
     // create a new window of size w*h pixels
     // top-left of the window is (0,0) and bottom-right is (w,h)
     // you will have to read these from the config file
@@ -17,31 +23,12 @@ int main(int argc, char* argv[])
     sf::RenderWindow window(sf::VideoMode({ windowWidth, windowHeight }), "SFML works!");
     window.setFramerateLimit(60); // limit frame rate to 60 fps
 
-    // initialize imgui and create a clock used for its internal timing
-    if (!ImGui::SFML::Init(window))
-    {
-        std::cout << "Could not initialize window\n";
-        std::exit(-1);
-    }
-
-    sf::Clock deltaClock;
-
-    // scale the imgui ui and text size by 2
-    ImGui::GetStyle().ScaleAllSizes(1.5f);
-    ImGui::GetIO().FontGlobalScale = 1.5f;
-
-    // the imgui color {r, g, b} wheel requires floats from 0-1
-    // sfml will require instead of uint8_t from 0-255
-    // this is the only really annoying conversion between sfml and imgui
-    float c[3] = { 0.0f, 1.0f, 1.0f };
-
     // let's make a shape that we will draw to the screen
     float circleRadius = 50;    // radius to draw the circle
     int circleSegments = 32;    // number of segments to draw the circle with
     float circleSpeedX = 2.0f;  // we will use this to move the circle later
     float circleSpeedY = 2.0f;  // you will read these values from the file
-    bool drawCircle = true;     // whether or not to draw the circle
-    bool drawText = true;     // whether or not to draw the text
+	bool drawCircle    = true;
 
     // create the sfml circle shape based on our parameters
     sf::CircleShape circle(circleRadius, circleSegments);           // create a circle shape with radius 50
@@ -75,9 +62,6 @@ int main(int argc, char* argv[])
         // event handling 
         while (auto event = window.pollEvent())
         {
-            // pass the event to imgui to be parsed
-            ImGui::SFML::ProcessEvent(window, *event);
-
             // this event triggers when the window is closed
             if (event->is<sf::Event::Closed>())
             {
@@ -100,37 +84,13 @@ int main(int argc, char* argv[])
         // prevents further processing of the frame if the window is closed
         if (!window.isOpen()) { break;}
 
-        // update imgui for this frame with the time that the last frame took
-        ImGui::SFML::Update(window, deltaClock.restart());
-
-        // draw the UI
-        ImGui::Begin("Window title");
-        ImGui::Text("Window text!");
-        ImGui::Checkbox("Draw Circle", &drawCircle);
-        ImGui::SameLine();
-        ImGui::Checkbox("Draw Text", &drawText);
-        ImGui::SliderFloat("Radius", &circleRadius, 0.0f, 300.0f);
-        ImGui::SliderInt("Sides", &circleSegments, 3, 64);
-        ImGui::ColorEdit3("Color Circle", c);
-        ImGui::InputText("Text", &displayString);
-        if (ImGui::Button("Set Text"))
-        {
-            text.setString(displayString);
-        }
-        ImGui::SameLine();
-        if (ImGui::Button("Reset Circle"))
-        {
-            circle.setPosition({ 0, 0 });
-        }
-        ImGui::End();
-
         // set the circle properties, because they may have been updated with the ui
         circle.setPointCount(circleSegments);
         circle.setRadius(circleRadius);
 
         // imgui uses 0-1 float for colors, sfml uses 0-255 for colors
         // we must convert from the ui floats to sfml Uint8
-        circle.setFillColor(sf::Color(uint8_t(c[0]*255), uint8_t(c[1]*255), uint8_t(c[2]*255)));
+        circle.setFillColor(sf::Color(255, 255, 255));
 
         // basic rendering function calls
         window.clear();         // clear the window of anything previously drawn
@@ -151,15 +111,11 @@ int main(int argc, char* argv[])
 			
             window.draw(circle); 
         }   
-        if (drawText)           // draw the text if the boolean is true
-        { 
-            window.draw(text); 
-        }     
-        ImGui::SFML::Render(window); // draw the ui last so it's on top
-        window.display();       // call the window display function
+        
+        window.draw(text); 
+            
+        window.display();
     }
-
-    ImGui::SFML::Shutdown();
 
     return 0;
 }

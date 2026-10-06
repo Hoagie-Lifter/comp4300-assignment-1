@@ -1,20 +1,19 @@
-build/main.o: src/main.cpp libs/imgui/imconfig-SFML.h \
- E:/libraries/SFML-3.1.0/include/SFML/Graphics/Color.hpp \
- E:/libraries/SFML-3.1.0/include/SFML/Graphics/Color.inl \
- E:/libraries/SFML-3.1.0/include/SFML/System/Vector2.hpp \
- E:/libraries/SFML-3.1.0/include/SFML/System/Angle.hpp \
- E:/libraries/SFML-3.1.0/include/SFML/System/Angle.inl \
- E:/libraries/SFML-3.1.0/include/SFML/System/Vector2.inl \
- libs/imgui/imgui-SFML_export.h \
+build/main.o: src/main.cpp \
  E:/libraries/SFML-3.1.0/include/SFML/Graphics.hpp \
  E:/libraries/SFML-3.1.0/include/SFML/Graphics/BlendMode.hpp \
  E:/libraries/SFML-3.1.0/include/SFML/Graphics/Export.hpp \
  E:/libraries/SFML-3.1.0/include/SFML/Config.hpp \
  E:/libraries/SFML-3.1.0/include/SFML/Graphics/CircleShape.hpp \
  E:/libraries/SFML-3.1.0/include/SFML/Graphics/Shape.hpp \
+ E:/libraries/SFML-3.1.0/include/SFML/Graphics/Color.hpp \
+ E:/libraries/SFML-3.1.0/include/SFML/Graphics/Color.inl \
  E:/libraries/SFML-3.1.0/include/SFML/Graphics/Drawable.hpp \
  E:/libraries/SFML-3.1.0/include/SFML/Graphics/PrimitiveType.hpp \
  E:/libraries/SFML-3.1.0/include/SFML/Graphics/Rect.hpp \
+ E:/libraries/SFML-3.1.0/include/SFML/System/Vector2.hpp \
+ E:/libraries/SFML-3.1.0/include/SFML/System/Angle.hpp \
+ E:/libraries/SFML-3.1.0/include/SFML/System/Angle.inl \
+ E:/libraries/SFML-3.1.0/include/SFML/System/Vector2.inl \
  E:/libraries/SFML-3.1.0/include/SFML/Graphics/Rect.inl \
  E:/libraries/SFML-3.1.0/include/SFML/Graphics/RenderStates.hpp \
  E:/libraries/SFML-3.1.0/include/SFML/Graphics/CoordinateType.hpp \
@@ -79,26 +78,22 @@ build/main.o: src/main.cpp libs/imgui/imconfig-SFML.h \
  E:/libraries/SFML-3.1.0/include/SFML/System/MemoryInputStream.hpp \
  E:/libraries/SFML-3.1.0/include/SFML/System/Sleep.hpp \
  E:/libraries/SFML-3.1.0/include/SFML/System/TimeoutWithPredicate.hpp \
- E:/libraries/SFML-3.1.0/include/SFML/System/Version.hpp \
- libs/imgui/imgui.h libs/imgui/imconfig.h libs/imgui/imgui-SFML.h \
- libs/imgui/imgui_stdlib.h
-libs/imgui/imconfig-SFML.h:
-E:/libraries/SFML-3.1.0/include/SFML/Graphics/Color.hpp:
-E:/libraries/SFML-3.1.0/include/SFML/Graphics/Color.inl:
-E:/libraries/SFML-3.1.0/include/SFML/System/Vector2.hpp:
-E:/libraries/SFML-3.1.0/include/SFML/System/Angle.hpp:
-E:/libraries/SFML-3.1.0/include/SFML/System/Angle.inl:
-E:/libraries/SFML-3.1.0/include/SFML/System/Vector2.inl:
-libs/imgui/imgui-SFML_export.h:
+ E:/libraries/SFML-3.1.0/include/SFML/System/Version.hpp
 E:/libraries/SFML-3.1.0/include/SFML/Graphics.hpp:
 E:/libraries/SFML-3.1.0/include/SFML/Graphics/BlendMode.hpp:
 E:/libraries/SFML-3.1.0/include/SFML/Graphics/Export.hpp:
 E:/libraries/SFML-3.1.0/include/SFML/Config.hpp:
 E:/libraries/SFML-3.1.0/include/SFML/Graphics/CircleShape.hpp:
 E:/libraries/SFML-3.1.0/include/SFML/Graphics/Shape.hpp:
+E:/libraries/SFML-3.1.0/include/SFML/Graphics/Color.hpp:
+E:/libraries/SFML-3.1.0/include/SFML/Graphics/Color.inl:
 E:/libraries/SFML-3.1.0/include/SFML/Graphics/Drawable.hpp:
 E:/libraries/SFML-3.1.0/include/SFML/Graphics/PrimitiveType.hpp:
 E:/libraries/SFML-3.1.0/include/SFML/Graphics/Rect.hpp:
+E:/libraries/SFML-3.1.0/include/SFML/System/Vector2.hpp:
+E:/libraries/SFML-3.1.0/include/SFML/System/Angle.hpp:
+E:/libraries/SFML-3.1.0/include/SFML/System/Angle.inl:
+E:/libraries/SFML-3.1.0/include/SFML/System/Vector2.inl:
 E:/libraries/SFML-3.1.0/include/SFML/Graphics/Rect.inl:
 E:/libraries/SFML-3.1.0/include/SFML/Graphics/RenderStates.hpp:
 E:/libraries/SFML-3.1.0/include/SFML/Graphics/CoordinateType.hpp:
@@ -164,7 +159,3 @@ E:/libraries/SFML-3.1.0/include/SFML/System/MemoryInputStream.hpp:
 E:/libraries/SFML-3.1.0/include/SFML/System/Sleep.hpp:
 E:/libraries/SFML-3.1.0/include/SFML/System/TimeoutWithPredicate.hpp:
 E:/libraries/SFML-3.1.0/include/SFML/System/Version.hpp:
-libs/imgui/imgui.h:
-libs/imgui/imconfig.h:
-libs/imgui/imgui-SFML.h:
-libs/imgui/imgui_stdlib.h:
