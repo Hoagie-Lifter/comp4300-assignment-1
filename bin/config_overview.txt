@@ -1,0 +1,10 @@
+Circle:
+bool       	Draw
+float       Radius
+float       Speed x
+float       Speed y
+int			R
+int 		G
+int			B
+int 		Sides
+std::string Name	

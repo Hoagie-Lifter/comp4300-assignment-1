@@ -4,44 +4,57 @@
 
 #include <SFML/Graphics.hpp>
 
+struct CircleConfig {bool draw; float radius, speedX, speedY; int R, G, B, sides; std::string name;};
+CircleConfig circleConfig;
+
 void initialize(const std::string & configFile)
 {
 	std::ifstream fin(configFile);
 	std::string token;
-	while (fin >> token);
+	while (fin >> token)
+	{
+		if (token == "Circle:")
+		{
+			fin >> circleConfig.draw;
+			fin >> circleConfig.radius;
+			fin >> circleConfig.speedX;
+			fin >> circleConfig.speedY;
+			fin >> circleConfig.R;
+			fin >> circleConfig.G;
+			fin >> circleConfig.B;
+			fin >> circleConfig.sides;
+			fin >> circleConfig.name;
+		}
+	}
+	
+	std::cout << circleConfig.draw   << "\n";
+	std::cout << circleConfig.radius << "\n";
+	std::cout << circleConfig.speedX << "\n";
+	std::cout << circleConfig.speedY << "\n";
+	std::cout << circleConfig.R      << "\n";
+	std::cout << circleConfig.G      << "\n";
+	std::cout << circleConfig.B      << "\n";
+	std::cout << circleConfig.sides  << "\n";
+	std::cout << circleConfig.name   << "\n";
 }
 
 int main(int argc, char* argv[])
 {
-	initialize("config/config.txt");
+	initialize("bin/config.txt");
 	
-    // create a new window of size w*h pixels
-    // top-left of the window is (0,0) and bottom-right is (w,h)
-    // you will have to read these from the config file
     const int windowWidth = 1280;
     const int windowHeight = 720;
     sf::RenderWindow window(sf::VideoMode({ windowWidth, windowHeight }), "SFML works!");
-    window.setFramerateLimit(60); // limit frame rate to 60 fps
+    window.setFramerateLimit(60);
 
-    // let's make a shape that we will draw to the screen
-    float circleRadius = 50;    // radius to draw the circle
-    int circleSegments = 32;    // number of segments to draw the circle with
-    float circleSpeedX = 2.0f;  // we will use this to move the circle later
-    float circleSpeedY = 2.0f;  // you will read these values from the file
-	bool drawCircle    = true;
+    sf::CircleShape circle(circleConfig.radius, circleConfig.sides);
+    circle.setPosition({ windowWidth / 2.f, windowHeight / 2.f});
+	circle.setOrigin({circle.getRadius(), circle.getRadius()});
 
-    // create the sfml circle shape based on our parameters
-    sf::CircleShape circle(circleRadius, circleSegments);           // create a circle shape with radius 50
-    circle.setPosition({ windowWidth / 2.f, windowHeight / 2.f});   // set the top-left position of the circle
-	circle.setOrigin({circle.getRadius(), circle.getRadius()});		// set origin t ocenter of circle
-
-    // let's load a font so we can display some text
     sf::Font myFont;
 
-    // attempt to load the font from a file
     if (!myFont.openFromFile("bin/fonts/PPFraktionMonoBold.otf"))
     {
-        // if we can't load the font, print an error to the error console and exit
         std::cout << "Could not load font!\n";
         std::exit(-1);
     }
@@ -76,7 +89,7 @@ int main(int argc, char* argv[])
 
                 if (keyPressed->scancode == sf::Keyboard::Scancode::X)
                 {
-                    circleSpeedX *= -1.0f;
+                    circleConfig.speedX *= -1.f;
                 }
             }
         }
@@ -84,29 +97,23 @@ int main(int argc, char* argv[])
         // prevents further processing of the frame if the window is closed
         if (!window.isOpen()) { break;}
 
-        // set the circle properties, because they may have been updated with the ui
-        circle.setPointCount(circleSegments);
-        circle.setRadius(circleRadius);
-
-        // imgui uses 0-1 float for colors, sfml uses 0-255 for colors
-        // we must convert from the ui floats to sfml Uint8
-        circle.setFillColor(sf::Color(255, 255, 255));
+        circle.setFillColor(sf::Color(circleConfig.R, circleConfig.G, circleConfig.B));
 
         // basic rendering function calls
         window.clear();         // clear the window of anything previously drawn
-        if (drawCircle)         // draw the circle if the boolean is true
+        if (circleConfig.draw == true)         // draw the circle if the boolean is true
         {
 			// basic animation - move the circle each frame if it's still in frame
-			circle.setPosition({ circle.getPosition().x + circleSpeedX, circle.getPosition().y + circleSpeedY });
+			circle.setPosition({ circle.getPosition().x + circleConfig.speedX, circle.getPosition().y + circleConfig.speedY });
 			
 			if (circle.getPosition().x - circle.getRadius() <= 0 || circle.getPosition().x + circle.getRadius() >= windowWidth)
 			{
-				circleSpeedX *= -1;
+				circleConfig.speedX *= -1.f;
 			}
 			
 			if (circle.getPosition().y - circle.getRadius() <= 0 || circle.getPosition().y + circle.getRadius() >= windowHeight)
 			{
-				circleSpeedY *= -1;
+				circleConfig.speedY *= -1.f;
 			}
 			
             window.draw(circle); 
