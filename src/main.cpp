@@ -4,8 +4,11 @@
 
 #include <SFML/Graphics.hpp>
 
-struct CircleConfig {bool draw; float radius, speedX, speedY; int R, G, B, sides; std::string name;};
-CircleConfig circleConfig;
+struct CircleConfig    {bool draw; float radius, speedX, speedY; int R, G, B, sides; std::string name;};
+struct RectangleConfig {bool draw; float width, height, speedX, speedY; int R, G, B; std::string name;};
+
+CircleConfig    circleConfig;
+RectangleConfig rectangleConfig;
 
 void initialize(const std::string & configFile)
 {
@@ -25,17 +28,20 @@ void initialize(const std::string & configFile)
 			fin >> circleConfig.sides;
 			fin >> circleConfig.name;
 		}
+		
+		else if (token == "Rectangle:")
+		{
+			fin >> rectangleConfig.draw;
+			fin >> rectangleConfig.width;
+			fin >> rectangleConfig.height;
+			fin >> rectangleConfig.speedX;
+			fin >> rectangleConfig.speedY;
+			fin >> rectangleConfig.R;
+			fin >> rectangleConfig.G;
+			fin >> rectangleConfig.B;
+			fin >> rectangleConfig.name;
+		}
 	}
-	
-	std::cout << circleConfig.draw   << "\n";
-	std::cout << circleConfig.radius << "\n";
-	std::cout << circleConfig.speedX << "\n";
-	std::cout << circleConfig.speedY << "\n";
-	std::cout << circleConfig.R      << "\n";
-	std::cout << circleConfig.G      << "\n";
-	std::cout << circleConfig.B      << "\n";
-	std::cout << circleConfig.sides  << "\n";
-	std::cout << circleConfig.name   << "\n";
 }
 
 int main(int argc, char* argv[])
@@ -48,8 +54,14 @@ int main(int argc, char* argv[])
     window.setFramerateLimit(60);
 
     sf::CircleShape circle(circleConfig.radius, circleConfig.sides);
-    circle.setPosition({ windowWidth / 2.f, windowHeight / 2.f});
+	circle.setFillColor(sf::Color(circleConfig.R, circleConfig.G, circleConfig.B));
 	circle.setOrigin({circle.getRadius(), circle.getRadius()});
+    circle.setPosition({ windowWidth / 2.f, windowHeight / 2.f});
+	
+	sf::RectangleShape rectangle({rectangleConfig.width, rectangleConfig.height});
+	rectangle.setFillColor(sf::Color(rectangleConfig.R, rectangleConfig.G, rectangleConfig.B));
+	rectangle.setOrigin({rectangleConfig.width / 2, rectangleConfig.height / 2});
+	rectangle.setPosition({ windowWidth / 2.f, windowHeight / 2.f});
 
     sf::Font myFont;
 
@@ -97,28 +109,27 @@ int main(int argc, char* argv[])
         // prevents further processing of the frame if the window is closed
         if (!window.isOpen()) { break;}
 
-        circle.setFillColor(sf::Color(circleConfig.R, circleConfig.G, circleConfig.B));
+        //circle.setFillColor(sf::Color(circleConfig.R, circleConfig.G, circleConfig.B));
 
         // basic rendering function calls
         window.clear();         // clear the window of anything previously drawn
-        if (circleConfig.draw == true)         // draw the circle if the boolean is true
-        {
-			// basic animation - move the circle each frame if it's still in frame
-			circle.setPosition({ circle.getPosition().x + circleConfig.speedX, circle.getPosition().y + circleConfig.speedY });
+
+		// basic animation - move the circle each frame if it's still in frame
+		circle.setPosition({ circle.getPosition().x + circleConfig.speedX, circle.getPosition().y + circleConfig.speedY });
 			
-			if (circle.getPosition().x - circle.getRadius() <= 0 || circle.getPosition().x + circle.getRadius() >= windowWidth)
-			{
-				circleConfig.speedX *= -1.f;
-			}
+		if (circle.getPosition().x - circle.getRadius() <= 0 || circle.getPosition().x + circle.getRadius() >= windowWidth)
+		{
+			circleConfig.speedX *= -1.f;
+		}
 			
-			if (circle.getPosition().y - circle.getRadius() <= 0 || circle.getPosition().y + circle.getRadius() >= windowHeight)
-			{
-				circleConfig.speedY *= -1.f;
-			}
+		if (circle.getPosition().y - circle.getRadius() <= 0 || circle.getPosition().y + circle.getRadius() >= windowHeight)
+		{
+			circleConfig.speedY *= -1.f;
+		}
 			
-            window.draw(circle); 
-        }   
-        
+        window.draw(circle); 
+        window.draw(rectangle); 
+   
         window.draw(text); 
             
         window.display();
