@@ -10,6 +10,24 @@ struct RectangleConfig {bool draw; float width, height, speedX, speedY; int R, G
 CircleConfig    circleConfig;
 RectangleConfig rectangleConfig;
 
+void run()
+{
+	
+}
+
+sf::Font setFont()
+{
+	sf::Font myFont;
+
+    if (!myFont.openFromFile("bin/fonts/PPFraktionMonoBold.otf"))
+    {
+        std::cout << "Could not load font!\n";
+        std::exit(-1);
+    }
+	
+	return myFont;
+}
+
 void initialize(const std::string & configFile)
 {
 	std::ifstream fin(configFile);
@@ -44,32 +62,38 @@ void initialize(const std::string & configFile)
 	}
 }
 
-int main(int argc, char* argv[])
+sf::CircleShape createCircle(float windowWidth, float windowHeight)
 {
-	initialize("bin/config.txt");
-	
-    const int windowWidth = 1280;
-    const int windowHeight = 720;
-    sf::RenderWindow window(sf::VideoMode({ windowWidth, windowHeight }), "SFML works!");
-    window.setFramerateLimit(60);
-
-    sf::CircleShape circle(circleConfig.radius, circleConfig.sides);
+	sf::CircleShape circle(circleConfig.radius, circleConfig.sides);
 	circle.setFillColor(sf::Color(circleConfig.R, circleConfig.G, circleConfig.B));
 	circle.setOrigin({circle.getRadius(), circle.getRadius()});
     circle.setPosition({ windowWidth / 2.f, windowHeight / 2.f});
 	
+	return circle;
+}
+
+sf::RectangleShape createRectangle(float windowWidth, float windowHeight)
+{
 	sf::RectangleShape rectangle({rectangleConfig.width, rectangleConfig.height});
 	rectangle.setFillColor(sf::Color(rectangleConfig.R, rectangleConfig.G, rectangleConfig.B));
 	rectangle.setOrigin({rectangleConfig.width / 2, rectangleConfig.height / 2});
 	rectangle.setPosition({ windowWidth / 2.f, windowHeight / 2.f});
+	
+	return rectangle;
+}
 
-    sf::Font myFont;
-
-    if (!myFont.openFromFile("bin/fonts/PPFraktionMonoBold.otf"))
-    {
-        std::cout << "Could not load font!\n";
-        std::exit(-1);
-    }
+int main(int argc, char* argv[])
+{
+    const int windowWidth = 1280;
+    const int windowHeight = 720;
+    sf::RenderWindow window(sf::VideoMode({ windowWidth, windowHeight }), "SFML works!");
+    window.setFramerateLimit(60);
+	
+	initialize("bin/config.txt");
+	sf::Font myFont = {setFont()};
+	sf::CircleShape circle = {createCircle(windowWidth, windowHeight)};
+	sf::RectangleShape rectangle = {createRectangle(windowWidth, windowHeight)};
+	run();
 
     // set up the text object that will be drawn to the screen
     sf::Text text(myFont, "Sample Text", 24);
@@ -108,8 +132,6 @@ int main(int argc, char* argv[])
 
         // prevents further processing of the frame if the window is closed
         if (!window.isOpen()) { break;}
-
-        //circle.setFillColor(sf::Color(circleConfig.R, circleConfig.G, circleConfig.B));
 
         // basic rendering function calls
         window.clear();         // clear the window of anything previously drawn
