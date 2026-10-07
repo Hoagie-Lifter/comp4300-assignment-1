@@ -1,5 +1,8 @@
-Window 1280 720
-Font fonts/tech.ttf 18 255 255 255
+Window:
+1280
+720
+60
+Shape Demo
 
 Circle:
 1

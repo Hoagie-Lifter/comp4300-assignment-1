@@ -1,21 +1,27 @@
-Circle:
-bool       	Draw
-float       Radius
-float       Speed X
-float       Speed Y
-int			R
-int 		G
-int			B
-int 		Sides
-std::string Name
+Window:
+unsigned int Width
+unsigned int Height
+int			 frameLimit
+std::string  Name
 
-Retangle:
-bool 		Draw
-float		Width
-float		Height
-float		Speed X
-float		Speed Y
-int			R
-int			G
-int			B
-std::string Name
+Circle:      
+bool       	 Draw
+float        Radius
+float        Speed X
+float        Speed Y
+int			 R
+int 		 G
+int			 B
+int 		 Sides
+std::string  Name
+
+Retangle:    
+bool 		 Draw
+float		 Width
+float		 Height
+float		 Speed X
+float		 Speed Y
+int			 R
+int			 G
+int			 B
+std::string  Name
