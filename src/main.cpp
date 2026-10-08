@@ -14,7 +14,7 @@ RectangleConfig rectangleConfig;
 CircleConfig    circleConfig;
 TriangleConfig  triangleConfig;
 
-void run(sf::Text text, sf::RectangleShape rectangle, sf::CircleShape circle, sf::CircleShape triangle)
+void run(sf::Font myFont, sf::RectangleShape rectangle, sf::CircleShape circle, sf::CircleShape triangle)
 {
 	sf::RenderWindow window(sf::VideoMode({ windowConfig.width, windowConfig.height }), windowConfig.name);
     window.setFramerateLimit(windowConfig.frameLimit);
@@ -69,7 +69,13 @@ void run(sf::Text text, sf::RectangleShape rectangle, sf::CircleShape circle, sf
 				rectangleConfig.speedY *= -1.f;
 			}
 			
-			window.draw(rectangle); 
+			sf::Text text(myFont, "Rectangle", 16);
+			text.setOrigin(text.getLocalBounds().size / 2.f);
+			
+			text.setPosition({rectanglePosition.x, rectanglePosition.y});
+			
+			window.draw(rectangle);
+			window.draw(text);
 		}
 		
 		if (circleConfig.draw = true)
@@ -113,8 +119,7 @@ void run(sf::Text text, sf::RectangleShape rectangle, sf::CircleShape circle, sf
 			
 			window.draw(triangle); 
 		}
-		
-        window.draw(text);
+
         window.display();
     }
 }
@@ -246,7 +251,7 @@ int main(int argc, char* argv[])
     // text character size is in pixels, so move the text up  from the bottom by its height
     text.setPosition({ 0, windowConfig.height - (float)text.getCharacterSize() });
 	
-	run(text, rectangle, circle, triangle);
+	run(myFont, rectangle, circle, triangle);
 
     return 0;
 }
