@@ -49,15 +49,19 @@ void run(sf::Text text, sf::CircleShape circle, sf::RectangleShape rectangle)
         window.clear();         // clear the window of anything previously drawn
 
 		// basic animation - move the circle each frame if it's still in frame
-		circle.setPosition({ circle.getPosition().x + circleConfig.speedX, circle.getPosition().y + circleConfig.speedY });
+		circle.move({circleConfig.speedX, circleConfig.speedY});
+		
+		sf::Vector2f circlePosition = circle.getPosition();
 			
 		if (circle.getPosition().x - circle.getRadius() <= 0 || circle.getPosition().x + circle.getRadius() >= windowConfig.width)
 		{
+			circlePosition.x = 0;
 			circleConfig.speedX *= -1.f;
 		}
 			
-		if (circle.getPosition().y - circle.getRadius() <= 0 || circle.getPosition().y + circle.getRadius() >= windowConfig.height)
+		else if (circle.getPosition().y - circle.getRadius() <= 0 || circle.getPosition().y + circle.getRadius() >= windowConfig.height)
 		{
+			circlePosition.y = 0;
 			circleConfig.speedY *= -1.f;
 		}
 			
