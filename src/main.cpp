@@ -46,10 +46,48 @@ void moveRectangle(sf::RenderWindow & window, sf::RectangleShape & rectangle, sf
 	
 	rectangle.setPosition(rectanglePosition);
 	
-	rectangleText.setPosition({rectanglePosition.x, rectanglePosition.y});
+	rectangleText.setPosition(rectanglePosition);
 	
 	window.draw(rectangle);
 	window.draw(rectangleText);
+}
+
+void moveCircle(sf::RenderWindow & window, sf::CircleShape & circle, sf::Text & circleText)
+{
+	circle.move({circleConfig.speedX, circleConfig.speedY});
+	
+	sf::Vector2f circlePosition = circle.getPosition();
+	float circleRadius = circle.getRadius();
+	
+	if (circlePosition.x - circleRadius <= 0)
+	{
+		circlePosition.x = circleRadius;
+		circleConfig.speedX *= -1.f;
+	}
+	
+	else if (circlePosition.x + circleRadius >= windowConfig.width)
+	{
+		circlePosition.x = windowConfig.width - circleRadius;
+		circleConfig.speedX *= -1.f;
+	}
+	
+	if (circlePosition.y - circleRadius <= 0)
+	{
+		circlePosition.y = circleRadius;
+		circleConfig.speedY *= -1.f;
+	}
+	
+	else if (circlePosition.y + circleRadius >= windowConfig.height)
+	{
+		circlePosition.y = windowConfig.height - circleRadius;
+		circleConfig.speedY *= -1.f;
+	}
+	
+	circle.setPosition(circlePosition);
+	circleText.setPosition(circlePosition);
+	
+	window.draw(circle);
+	window.draw(circleText);
 }
 
 void run(sf::Font myFont, sf::RectangleShape rectangle, sf::CircleShape circle, sf::CircleShape triangle)
@@ -87,6 +125,9 @@ void run(sf::Font myFont, sf::RectangleShape rectangle, sf::CircleShape circle, 
 		
 		sf::Text rectangleText(myFont, "Rectangle", 16);
 		rectangleText.setOrigin(rectangleText.getLocalBounds().size / 2.f);
+		
+		sf::Text circleText(myFont, "Circle", 16);
+		circleText.setOrigin(circleText.getLocalBounds().size / 2.f);
 
         // basic rendering function calls
         window.clear();         // clear the window of anything previously drawn
@@ -99,23 +140,7 @@ void run(sf::Font myFont, sf::RectangleShape rectangle, sf::CircleShape circle, 
 		
 		if (circleConfig.draw = true)
 		{
-			circle.move({circleConfig.speedX, circleConfig.speedY});
-			
-			sf::Vector2f circlePosition = circle.getPosition();
-				
-			if (circle.getPosition().x - circle.getRadius() <= 0 || circle.getPosition().x + circle.getRadius() >= windowConfig.width)
-			{
-				circlePosition.x = 0;
-				circleConfig.speedX *= -1.f;
-			}
-				
-			else if (circle.getPosition().y - circle.getRadius() <= 0 || circle.getPosition().y + circle.getRadius() >= windowConfig.height)
-			{
-				circlePosition.y = 0;
-				circleConfig.speedY *= -1.f;
-			}
-			
-			window.draw(circle); 
+			moveCircle(window, circle, circleText);
 		}
 		
 		if (triangleConfig.draw = true)

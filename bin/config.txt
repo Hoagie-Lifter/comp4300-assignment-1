@@ -31,8 +31,8 @@ Triangle:
 50
 -1
 6
-255
-255
+0
+0
 255
 3
 Triangle
