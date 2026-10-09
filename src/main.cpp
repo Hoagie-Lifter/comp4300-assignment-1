@@ -46,36 +46,50 @@ void run(sf::Font myFont, sf::RectangleShape rectangle, sf::CircleShape circle, 
 
         // prevents further processing of the frame if the window is closed
         if (!window.isOpen()) { break;}
+		
+		sf::Text rectangleText(myFont, "Rectangle", 16);
+		rectangleText.setOrigin(rectangleText.getLocalBounds().size / 2.f);
 
         // basic rendering function calls
         window.clear();         // clear the window of anything previously drawn
 
-		// basic animation - move the shapes each frame if they're still in frame
+		// basic animation - move the shape each frame if they're still in frame
 		if (rectangleConfig.draw = true)
 		{
 			rectangle.move({rectangleConfig.speedX, rectangleConfig.speedY});
 			
 			sf::Vector2f rectanglePosition = rectangle.getPosition();
-				
-			if (rectangle.getPosition().x - rectangleConfig.width / 2 <= 0 || rectangle.getPosition().x + rectangleConfig.width / 2 >= windowConfig.width)
+			
+			if (rectangle.getPosition().x - rectangleConfig.width / 2 <= 0)
 			{
-				rectanglePosition.x = 0;
+				rectanglePosition.x = rectangleConfig.width / 2;
 				rectangleConfig.speedX *= -1.f;
 			}
-				
-			else if (rectangle.getPosition().y - rectangleConfig.height / 2 <= 0 || rectangle.getPosition().y + rectangleConfig.height / 2 >= windowConfig.height)
+			
+			else if (rectangle.getPosition().x + rectangleConfig.width / 2 >= windowConfig.width)
 			{
-				rectanglePosition.y = 0;
+				rectanglePosition.x = windowConfig.width - rectangleConfig.width / 2;
+				rectangleConfig.speedX *= -1.f;
+			}
+			
+			if (rectangle.getPosition().y - rectangleConfig.height / 2 <= 0)
+			{
+				rectanglePosition.y = rectangleConfig.height / 2;
 				rectangleConfig.speedY *= -1.f;
 			}
 			
-			sf::Text text(myFont, "Rectangle", 16);
-			text.setOrigin(text.getLocalBounds().size / 2.f);
+			else if (rectangle.getPosition().y + rectangleConfig.height / 2 >= windowConfig.height)
+			{
+				rectanglePosition.y = windowConfig.height - rectangleConfig.height / 2;
+				rectangleConfig.speedY *= -1.f;
+			}
 			
-			text.setPosition({rectanglePosition.x, rectanglePosition.y});
+			rectangle.setPosition(rectanglePosition);
+			
+			rectangleText.setPosition({rectanglePosition.x, rectanglePosition.y});
 			
 			window.draw(rectangle);
-			window.draw(text);
+			window.draw(rectangleText);
 		}
 		
 		if (circleConfig.draw = true)
