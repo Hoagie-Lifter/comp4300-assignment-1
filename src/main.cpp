@@ -20,27 +20,30 @@ void moveRectangle(sf::RenderWindow & window, sf::RectangleShape & rectangle, sf
 	
 	sf::Vector2f rectanglePosition = rectangle.getPosition();
 	
-	if (rectangle.getPosition().x - rectangleConfig.width / 2 <= 0)
+	int halfWidth = rectangleConfig.width / 2;
+	int halfheight = rectangleConfig.height / 2;
+	
+	if (rectangle.getPosition().x - halfWidth <= 0)
 	{
-		rectanglePosition.x = rectangleConfig.width / 2;
+		rectanglePosition.x = halfWidth;
 		rectangleConfig.speedX *= -1.f;
 	}
 	
-	else if (rectangle.getPosition().x + rectangleConfig.width / 2 >= windowConfig.width)
+	else if (rectangle.getPosition().x + halfWidth >= windowConfig.width)
 	{
-		rectanglePosition.x = windowConfig.width - rectangleConfig.width / 2;
+		rectanglePosition.x = windowConfig.width - halfWidth;
 		rectangleConfig.speedX *= -1.f;
 	}
 	
-	if (rectangle.getPosition().y - rectangleConfig.height / 2 <= 0)
+	if (rectangle.getPosition().y - halfheight <= 0)
 	{
-		rectanglePosition.y = rectangleConfig.height / 2;
+		rectanglePosition.y = halfheight;
 		rectangleConfig.speedY *= -1.f;
 	}
 	
-	else if (rectangle.getPosition().y + rectangleConfig.height / 2 >= windowConfig.height)
+	else if (rectangle.getPosition().y + halfheight >= windowConfig.height)
 	{
-		rectanglePosition.y = windowConfig.height - rectangleConfig.height / 2;
+		rectanglePosition.y = windowConfig.height - halfheight;
 		rectangleConfig.speedY *= -1.f;
 	}
 	
