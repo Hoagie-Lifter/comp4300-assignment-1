@@ -93,6 +93,44 @@ void moveCircle(sf::RenderWindow & window, sf::CircleShape & circle, sf::Text & 
 	window.draw(circleText);
 }
 
+void moveTriangle(sf::RenderWindow & window, sf::CircleShape & triangle, sf::Text & triangleText)
+{
+	triangle.move({triangleConfig.speedX, triangleConfig.speedY});
+	
+	sf::Vector2f trianglePosition = triangle.getPosition();
+	float circleRadius = triangle.getRadius();
+	
+	if (trianglePosition.x - circleRadius <= 0)
+	{
+		trianglePosition.x = circleRadius;
+		triangleConfig.speedX *= -1.f;
+	}
+	
+	else if (trianglePosition.x + circleRadius >= windowConfig.width)
+	{
+		trianglePosition.x = windowConfig.width - circleRadius;
+		triangleConfig.speedX *= -1.f;
+	}
+	
+	if (trianglePosition.y - circleRadius <= 0)
+	{
+		trianglePosition.y = circleRadius;
+		triangleConfig.speedY *= -1.f;
+	}
+	
+	else if (trianglePosition.y + circleRadius >= windowConfig.height)
+	{
+		trianglePosition.y = windowConfig.height - circleRadius;
+		triangleConfig.speedY *= -1.f;
+	}
+	
+	triangle.setPosition(trianglePosition);
+	triangleText.setPosition(trianglePosition);
+	
+	window.draw(triangle);
+	window.draw(triangleText);
+}
+
 void run(sf::Font myFont, sf::RectangleShape rectangle, sf::CircleShape circle, sf::CircleShape triangle)
 {
 	sf::RenderWindow window(sf::VideoMode({ windowConfig.width, windowConfig.height }), windowConfig.name);
@@ -131,6 +169,9 @@ void run(sf::Font myFont, sf::RectangleShape rectangle, sf::CircleShape circle, 
 		
 		sf::Text circleText(myFont, "Circle", 16);
 		circleText.setOrigin(circleText.getLocalBounds().size / 2.f);
+		
+		sf::Text triangleText(myFont, "Triangle", 16);
+		triangleText.setOrigin(triangleText.getLocalBounds().size / 2.f);
 
         // basic rendering function calls
         window.clear();         // clear the window of anything previously drawn
@@ -148,23 +189,7 @@ void run(sf::Font myFont, sf::RectangleShape rectangle, sf::CircleShape circle, 
 		
 		if (triangleConfig.draw = true)
 		{
-			triangle.move({triangleConfig.speedX, triangleConfig.speedY});
-			
-			sf::Vector2f trianglePosition = triangle.getPosition();
-				
-			if (triangle.getPosition().x - triangle.getRadius() <= 0 || triangle.getPosition().x + triangle.getRadius() >= windowConfig.width)
-			{
-				trianglePosition.x = 0;
-				triangleConfig.speedX *= -1.f;
-			}
-				
-			else if (triangle.getPosition().y - triangle.getRadius() <= 0 || triangle.getPosition().y + triangle.getRadius() >= windowConfig.height)
-			{
-				trianglePosition.y = 0;
-				triangleConfig.speedY *= -1.f;
-			}
-			
-			window.draw(triangle); 
+			moveTriangle(window, triangle, triangleText);
 		}
 
         window.display();
@@ -290,14 +315,6 @@ int main(int argc, char* argv[])
 	sf::RectangleShape rectangle = {createRectangle()};
 	sf::CircleShape circle = {createCircle()};
 	sf::CircleShape triangle = {createTriangle()};
-
-    // set up the text object that will be drawn to the screen
-    sf::Text text(myFont, "Sample Text", 24);
-
-    // position the top-left corner of the text so that the text aligns on the bottom
-    // text character size is in pixels, so move the text up  from the bottom by its height
-    text.setPosition({ 0, windowConfig.height - (float)text.getCharacterSize() });
-	
 	run(myFont, rectangle, circle, triangle);
 
     return 0;
